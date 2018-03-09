@@ -6,27 +6,44 @@ const pkg = require('../package.json');
 
 const config = new Conf();
 
-updateNotifier({pkg}).notify();
 
+/**
+ * Update the notifier.
+ */
+updateNotifier({
+    pkg
+}).notify();
+
+
+/**
+ * Change parameters.
+ * @param {array|string} argv - argument from the launch command.
+ */
 const saveCurrencies = argv => {
-  config.set('defaultFrom', argv[1] || config.get('defaultFrom', 'USD'));
-  config.set(
-    'defaultTo',
-    argv.length > 2
-      ? process.argv.slice(4)
-      : config.get('defaultTo', ['USD', 'EUR', 'GBP'])
-  );
-  console.log(chalk.green('Saved default currencies to ' + config.path));
-  process.exit(1);
+    config.set('defaultFrom', argv[1] || config.get('defaultFrom', 'USD'));
+    config.set(
+        'defaultTo',
+        argv.length > 2 ?
+        process.argv.slice(4) :
+        config.get('defaultTo', ['USD', 'EUR', 'GBP'])
+    );
+    console.log(chalk.green('Saved default currencies to ' + config.path));
+    process.exit(1);
 };
 
+/**
+ * Display the version.
+ */
 const version = () => {
-  console.log(pkg.version);
-  process.exit(1);
+    console.log(pkg.version);
+    process.exit(1);
 };
 
+/**
+ * Display the help text with formating and colors.
+ */
 const help = () => {
-  console.log(`
+    console.log(`
 Usage:
 
  $ ${chalk.cyan('node bin/index.js')} ${chalk.green('<amount>')} ${chalk.yellow(
@@ -38,7 +55,7 @@ Usage:
 Commands:
 ${chalk.magenta('--save,  -s')}       Save currencies as default currencies
 ${chalk.magenta('--help,  -h')}       Display help message
-${chalk.magenta('--version,  -v')}     Display version number
+${chalk.magenta('--version,  -v')}    Display version number
 
  List of currencies: http://akep.us/currencies
 
@@ -54,31 +71,35 @@ Examples:
 
  $ ${chalk.cyan('node bin/index.js')} ${chalk.magenta('--help')}
   `);
-  process.exit(1);
+    process.exit(1);
 };
 
+/**
+ * Do specifics commands.
+ * @param {array|string} argv - argument from the launch command.
+ */
 const helpers = argv => {
-  // Version
-  if (argv.indexOf('--version') !== - 1 || argv.indexOf('-v') !== - 1) {
-    version();
-  }
+    // Version
+    if (argv.indexOf('--version') !== -1 || argv.indexOf('-v') !== -1) {
+        version();
+    }
 
-  // Help
-  if (
-    argv.indexOf('--help') !== - 1
-    || argv.indexOf('-h') !== - 1
-    || ! argv.length
-  ) {
-    help();
-  }
+    // Help
+    if (
+        argv.indexOf('--help') !== -1 ||
+        argv.indexOf('-h') !== -1 ||
+        !argv.length
+    ) {
+        help();
+    }
 
-  if (
-    argv.indexOf('--save') !== - 1
-    || argv.indexOf('-s') !== - 1
-    || ! argv.length
-  ) {
-    saveCurrencies(argv);
-  }
+    if (
+        argv.indexOf('--save') !== -1 ||
+        argv.indexOf('-s') !== -1 ||
+        !argv.length
+    ) {
+        saveCurrencies(argv);
+    }
 };
 
 module.exports = helpers;
