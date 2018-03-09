@@ -68,11 +68,8 @@ test('should handle rounding errors', () => {
     //convert(4.6, 'Satoshi', 'BTC', 'Number');
     //convert(0.000000046, 'BTC', 'Satoshi', 'Number');
 
-    expect(convert(4.6, 'Satoshi', 'BTC', 'Number'));
-    expect(convert(0.000000046, 'BTC', 'Satoshi', 'Number'));
-
-
-    throw new Error('test not yet defined... write your test here');
+    expect(convert(4.6, 'Satoshi', 'BTC', 'Number')).toBeCloseTo(0.000000046);
+    expect(convert(0.000000046, 'BTC', 'Satoshi', 'Number')).toBeCloseTo(4.6);
 });
 
 test('should throw when untest is undefined', () => {
@@ -80,32 +77,36 @@ test('should throw when untest is undefined', () => {
     //convert(new Big(2), 'BTC', 'x', 'Number');
     //convert(NaN, 'x', 'BTC', 'Number');
     //convert(NaN, 'BTC', 'x', 'Number');
-
-    expect(convert(new Big(2), 'x', 'BTC', 'Number'));
-    expect(convert(new Big(2), 'BTC', 'x', 'Number'));
-    expect(convert(NaN, 'x', 'BTC', 'Number'));
-    expect(convert(NaN, 'BTC', 'x', 'Number'));
-
-    throw new Error('test not yet defined... write your test here');
+    expect(() => {
+        convert(new Big(2), 'x', 'BTC', 'Number');
+    }).toThrow();
+    expect(() => {
+        convert(new Big(2), 'BTC', 'x', 'Number');
+    }).toThrow();
+    expect(() => {
+        convert(NaN, 'x', 'BTC', 'Number');
+    }).toThrow();
+    expect(() => {
+        convert(NaN, 'BTC', 'x', 'Number');
+    }).toThrow();
 });
 
 test('should throw when representaion is undefined', () => {
     //convert(2, 'BTC', 'mBTC', 'x');
     //convert(NaN, 'BTC', 'mBTC', 'x');
-
-    expect(convert(2, 'BTC', 'mBTC', 'x'));
-    expect(convert(NaN, 'BTC', 'mBTC', 'x'));
-
-
+    expect(() => {
+        convert(2, 'BTC', 'mBTC', 'x');
+    }).toThrow();
+    expect(() => {
+        convert(NaN, 'BTC', 'mBTC', 'x');
+    }).toThrow();
 });
 
 test('should allow untest aliases', () => {
     //convert(4.6, 'Satoshi', 'sat');
     //convert(4.6, 'μBTC', 'btest');
-
-    expect(convert(4.6, 'Satoshi', 'sat'));
-    expect(convert(4.6, 'μBTC', 'btest'));
-
-
-    throw new Error('test not yet defined... write your test here');
+    expect(convert(4.6, 'Satoshi', 'sat')).toBeCloseTo(4.6);
+    expect(() => {
+        convert(4.6, 'μBTC', 'btest');
+    }).toThrow("'btest' is not a bitcoin unit");
 });
